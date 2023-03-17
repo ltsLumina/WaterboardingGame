@@ -1,7 +1,9 @@
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
-#
+# 
+# 
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -43,6 +45,9 @@ ExportedObj/
 *.opendb
 *.VC.db
 
+# MacOS trash
+*.DS_Store
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
@@ -57,4 +62,9 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# User settings
+[Uu]ser[Ss]ettings/*
+[Uu]ser[Ss]ettings/EditorUserSettings.asset # Just in case; I HATE merge conflicts that happen because of this file.
+
 
