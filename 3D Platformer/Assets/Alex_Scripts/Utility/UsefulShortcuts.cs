@@ -68,7 +68,6 @@ public static class UsefulMethods
     /// Allows you to call a method after a delay through the use of an asynchronous operation. </summary>
     /// <example> DelayTaskAsync(() => action(), delayInSeconds, debugLog, cancellationToken).AsTask(); </example>
     /// <remarks> To run a method after the task is completed: Task delayTask = delayTask.ContinueWith(_ => action();</remarks>
-    /// <remarks> Requires UniTask. </remarks>
     /// <param name="action">The action or method to run. Use delegate lambda " () => " to run. </param>
     /// <param name="delayInSeconds">The delay before running the method.</param>
     /// <param name="debugLog">Whether or not to debug the waiting message.</param>
