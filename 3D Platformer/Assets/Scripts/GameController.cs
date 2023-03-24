@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SceneLoader : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public void LoadNext()
     {
