@@ -22,6 +22,7 @@ public static class SceneManagerExtended
     public static void ReloadScene()
     {
         SceneManager.LoadScene(ClampBuildIndex(SceneManager.GetActiveScene().buildIndex));
+        Time.timeScale = 1f;
     }
 
     /// <summary>
