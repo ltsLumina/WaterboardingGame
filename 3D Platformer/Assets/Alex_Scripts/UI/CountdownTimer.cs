@@ -25,7 +25,6 @@ public class CountdownTimer : MonoBehaviour
     [Header("Private & Cached Variables")]
     bool countDirectionLastFrame;
     PlayerController player;
-    SceneLoader loader;
 
 
     void Start()
@@ -33,7 +32,6 @@ public class CountdownTimer : MonoBehaviour
         countDirectionLastFrame = !countUp;
         timeValue               = startTime;
         player                  = FindObjectOfType<PlayerController>();
-        loader                  = FindObjectOfType<SceneLoader>();
     }
 
     void Update()
@@ -70,6 +68,7 @@ public class CountdownTimer : MonoBehaviour
         if (timeValue <= 0) CD_PlayerDeath();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     void CD_PlayerDeath()
     {
         Destroy(player);
@@ -77,7 +76,7 @@ public class CountdownTimer : MonoBehaviour
 
         try
         {
-            loader.ReloadScene();
+            SceneManagerExtended.ReloadScene();
         } catch (Exception error)
         {
             Debug.LogError("Error: " + error.Message + "\n There is no end-scene scene in the build settings.");

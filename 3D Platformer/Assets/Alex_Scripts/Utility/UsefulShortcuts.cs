@@ -1,15 +1,14 @@
 using System;
-using System.Collections;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 
 internal static class UsefulShortcuts
 {
-    static GameObject testBool;
-
     /// <summary>
     /// Alt+ C to clear the console.
     /// </summary>
@@ -23,16 +22,104 @@ internal static class UsefulShortcuts
     }
 
     /// <summary>
-    /// Allows you to call a method after a delay through the use of delegates.
+    /// A collection of debugging shortcuts.
+    /// Includes keyboard shortcuts tied to the F-keys, as well as context menus.
+    /// Note: These methods are local functions, and are only accessible within this method.
     /// </summary>
-    /// <param name="delayInSeconds">The delay before running the method.</param>
-    /// <param name="action">The action or method to run.</param>
-    public static async void DoAfterDelay(Action action, float delayInSeconds)
+
+#if UNITY_EDITOR
+    [Shortcut("Damage Player", KeyCode.F1), ContextMenu("Damage Player")]
+    static void DamagePlayer()
     {
-        Debug.Log("Waiting for " + delayInSeconds + " seconds...");
+        // Damage the player by 10.
+        //GameManager.Instance.Player.CurrentHealth -= 10;
+        Debug.Log("Player damaged.");
+    }
+
+    [Shortcut("Heal Player", KeyCode.F2), ContextMenu("Heal Player")]
+    static void HealPlayer()
+    {
+        // Heal the player by 10.
+        //GameManager.Instance.Player.CurrentHealth += 10;
+        Debug.Log("Player healed.");
+    }
+
+    [Shortcut("Kill Player", KeyCode.F3), ContextMenu("Kill Player")]
+    static void KillPlayer()
+    {
+        // Kill the player.
+        //GameManager.Instance.Player.CurrentHealth = 0;
+        Debug.Log("Player killed.");
+    }
+
+    [Shortcut("Reload Scene", KeyCode.F5), ContextMenu("Reload Scene")]
+    static void ReloadScene()
+    {
+        // Reload Scene
+        SceneManagerExtended.ReloadScene();
+        Debug.Log("Scene reloaded.");
+    }
+#endif
+}
+
+public static class UsefulMethods
+{
+    /// <summary>
+    /// Allows you to call a method after a delay through the use of an asynchronous operation. </summary>
+    /// <example> DelayTaskAsync(() => action(), delayInSeconds, debugLog, cancellationToken).AsTask(); </example>
+    /// <remarks> To run a method after the task is completed: Task delayTask = delayTask.ContinueWith(_ => action();</remarks>
+    /// <remarks> Requires UniTask. </remarks>
+    /// <param name="action">The action or method to run. Use delegate lambda " () => " to run. </param>
+    /// <param name="delayInSeconds">The delay before running the method.</param>
+    /// <param name="debugLog">Whether or not to debug the waiting message.</param>
+    /// <param name="cancellationToken"> Token for cancelling the currently running task. Not required. </param>
+    public static async UniTask DelayTaskAsync(Action action, float delayInSeconds, bool debugLog = false, CancellationToken cancellationToken = default)
+    {
+        if (debugLog) Debug.Log($"Waiting for {delayInSeconds} seconds...");
         var timeSpan = TimeSpan.FromSeconds(delayInSeconds);
-        await Task.Delay(timeSpan);
+        await UniTask.Delay(timeSpan, cancellationToken: cancellationToken);
         action();
-        Debug.Log("Completed action.");
+        if (debugLog) Debug.Log("Action completed.");
+    }
+
+    /// <summary>
+    /// !WARNING! This method is not asynchronous, and will block the main thread, causing the game to freeze.
+    /// However, the purpose of this method is to allow you to call a method after a delay, without having to make the method asynchronous.
+    /// Unsure if this method even works in its current state.
+    /// </summary>
+    /// <param name="action">The action or method to run.</param>
+    /// <param name="delayInSeconds">The delay before running the method.</param>
+    /// <param name="debugLog">Whether or not to debug the waiting message and the completion message.</param>
+    /// <param name="onComplete">An action to be completed after the initial action is finished. Not required to be used.</param>
+    [Obsolete("This method is not finished or has been deprecated. Use 'DoAfterDelayAsync' instead.")]
+    public static void DoAfterDelay(Action action, float delayInSeconds, bool debugLog = false, Action onComplete = null)
+    {
+        if (debugLog) Debug.Log("Waiting for " + delayInSeconds + " seconds...");
+        var timeSpan = TimeSpan.FromSeconds(delayInSeconds);
+        Task.Delay(timeSpan).ContinueWith(_ =>
+        {
+            action();
+            if (debugLog) Debug.Log("Action completed.");
+            onComplete?.Invoke();
+        });
+    }
+}
+
+public class ReadOnlyAttribute : PropertyAttribute
+{ }
+
+/// <summary>
+/// Allows you to add '[ReadOnly]' before a variable so that it is shown but not editable in the inspector.
+/// Small but useful script, to make your inspectors look pretty and useful :D
+/// <example> [SerializedField, ReadOnly] int myInt; </example>
+/// </summary>
+[CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
+public class ReadOnlyPropertyDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        GUI.enabled = false;
+        EditorGUI.PropertyField(position, property, label);
+        GUI.enabled = true;
     }
 }
