@@ -106,7 +106,7 @@ Material:
     - Vector1_A6A0BC26: 0.08
     - Vector1_B9F56378: 0.5
     - Vector1_C360A163: 0
-    - Vector1_E5C51606: 2
+    - Vector1_E5C51606: 0
     - Vector1_F38B44AA: 0
     - _AlphaClip: 0
     - _Blend: 0
@@ -133,7 +133,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
-    - _WaveFrequency: 0.65
+    - _WaveFrequency: 0.1
     - _WaveScale: 1
     - _WaveSpeed: 1
     - _WorkflowMode: 1
