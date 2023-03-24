@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -8,33 +5,25 @@ public class Checkpoint : MonoBehaviour
     /// <summary>
     /// Checkpoint system when player touches this object, it will save the player's position and rotation and when the player dies, it will respawn at the last checkpoint touched.
     /// </summary>
-
-    static Vector3 lastCheckpointPosition;
-    static Quaternion lastCheckpointRotation;
-    static bool hasCheckpoint;
-
-    public static Vector3 LastCheckpointPosition => lastCheckpointPosition;
-    public static Quaternion LastCheckpointRotation => lastCheckpointRotation;
-    public static bool HasCheckpoint => hasCheckpoint;
+    public static Vector3 LastCheckpointPosition { get; private set; }
+    public static Quaternion LastCheckpointRotation { get; private set; }
+    public static bool HasCheckpoint { get; private set; }
 
     void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
-        lastCheckpointPosition = other.transform.position;
-        lastCheckpointRotation = other.transform.rotation;
-        hasCheckpoint          = true;
+        LastCheckpointPosition = other.transform.position;
+        LastCheckpointRotation = other.transform.rotation;
+        HasCheckpoint          = true;
         Debug.Log("Checkpoint saved!");
     }
 
-    void Update()
-    {
-        DEBUG_ResetCheckpoint();
-    }
+    void Update() => DEBUG_ResetCheckpoint();
 
     void DEBUG_ResetCheckpoint()
     {
         if (!Input.GetKeyDown(KeyCode.C)) return;
-        hasCheckpoint = false;
+        HasCheckpoint = false;
         Debug.Log("Checkpoint reset.");
     }
 

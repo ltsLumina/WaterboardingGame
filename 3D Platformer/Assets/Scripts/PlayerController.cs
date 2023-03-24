@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     Transform mainCamera;
     Vector2 movementInput;
 
+    public bool IsDashing => isDashing;
+
     //Cached references
     Rigidbody myRigidbody;
     readonly static int dashing = Animator.StringToHash("isDashing");

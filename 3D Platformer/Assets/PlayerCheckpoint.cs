@@ -7,14 +7,16 @@ public class PlayerCheckpoint : MonoBehaviour
 {
     void Start()
     {
-        if (Checkpoint.HasCheckpoint)
+        switch (Checkpoint.HasCheckpoint)
         {
-            transform.position = Checkpoint.LastCheckpointPosition;
-            transform.rotation = Checkpoint.LastCheckpointRotation;
-        }
-        else
-        {
-            Debug.Log("No checkpoint found.");
+            case true:
+                transform.position = Checkpoint.LastCheckpointPosition;
+                transform.rotation = Checkpoint.LastCheckpointRotation;
+                break;
+
+            default:
+                Debug.Log("No checkpoint found.");
+                break;
         }
     }
 }
