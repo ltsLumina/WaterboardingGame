@@ -7,6 +7,10 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Health")]
+    [SerializeField] float currentHealth = 100f;
+    [SerializeField] float maxHealth = 100f;
+
     [Header("Running")]
     [SerializeField] float topSpeed = 10f;
     [SerializeField] float acceleration = 1f;
@@ -44,14 +48,27 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDashing => isDashing;
 
+    public Rigidbody MyRigidbody { get; set; }
+
+    public float CurrentHealth
+    {
+        get => currentHealth;
+        set
+        {
+            currentHealth = value;
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        }
+    }
+
+
+
     //Cached references
-    Rigidbody myRigidbody;
-    readonly static int dashing = Animator.StringToHash("isDashing");
-    readonly static int grounded = Animator.StringToHash("isGrounded");
+    readonly static int Dashing = Animator.StringToHash("isDashing");
+    readonly static int Grounded = Animator.StringToHash("isGrounded");
 
     void Start()
     {
-        myRigidbody       = GetComponent<Rigidbody>();
+        MyRigidbody       = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
     }
@@ -84,17 +101,17 @@ public class PlayerController : MonoBehaviour
         canDash = true;
     }
 
-    void ApplyGravityMultiplier() { myRigidbody.velocity += Vector3.down * gravityMultiplier; }
+    void ApplyGravityMultiplier() { MyRigidbody.velocity += Vector3.down * gravityMultiplier; }
 
     #region Animation updates from Update
     void UpdateAnimationStates()
     {
         //The "animation update - code" needs refactoring. This is not a priority.
-        characterAnimator.SetBool(dashing, isDashing);
+        characterAnimator.SetBool(Dashing, isDashing);
 
         if (isGrounded)
         {
-            characterAnimator.SetBool(grounded, true);
+            characterAnimator.SetBool(Grounded, true);
 
             if (!landingLock && fallingTimer > 0.3f)
             {
@@ -121,9 +138,9 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        characterAnimator.SetBool("isJumpingUp", myRigidbody.velocity.y > 1);
+        characterAnimator.SetBool("isJumpingUp", MyRigidbody.velocity.y > 1);
 
-        characterAnimator.SetBool("isFalling", myRigidbody.velocity.y < 0);
+        characterAnimator.SetBool("isFalling", MyRigidbody.velocity.y < 0);
     }
     #endregion
 
@@ -134,7 +151,7 @@ public class PlayerController : MonoBehaviour
         if (movementInput.magnitude < Mathf.Epsilon) return;
 
         float angle = Mathf.Atan2(movementInput.x, movementInput.y) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
-        myRigidbody.rotation = Quaternion.Euler(0, angle, 0);
+        MyRigidbody.rotation = Quaternion.Euler(0, angle, 0);
     }
 
     void UpdateCoyoteTimeCounter()
@@ -155,8 +172,8 @@ public class PlayerController : MonoBehaviour
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, t * Time.fixedDeltaTime);
 
         Vector3 movementDirection = Quaternion.Euler(0f, transform.eulerAngles.y, 0f) * Vector3.forward;
-        Vector3 movementVelocity  = movementDirection * currentSpeed + Vector3.up * myRigidbody.velocity.y;
-        myRigidbody.velocity = movementVelocity;
+        Vector3 movementVelocity  = movementDirection * currentSpeed + Vector3.up * MyRigidbody.velocity.y;
+        MyRigidbody.velocity = movementVelocity;
     }
     #endregion
 
@@ -175,8 +192,8 @@ public class PlayerController : MonoBehaviour
     {
         isJumping            =  true;
         coyoteTimeCounter    =  coyoteTime;
-        myRigidbody.velocity -= Vector3.up * myRigidbody.velocity.y;
-        myRigidbody.AddForce(jumpForce * Vector3.up, ForceMode.VelocityChange);
+        MyRigidbody.velocity -= Vector3.up * MyRigidbody.velocity.y;
+        MyRigidbody.AddForce(jumpForce * Vector3.up, ForceMode.VelocityChange);
 
         //Trigger squash and stretch animation and particle effect
         characterAnimator.SetTrigger("squashJump");
@@ -204,9 +221,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator CancelJumpRoutine()
     {
-        while (myRigidbody.velocity.y > 0f)
+        while (MyRigidbody.velocity.y > 0f)
         {
-            myRigidbody.velocity += Vector3.down * jumpCancellationForce;
+            MyRigidbody.velocity += Vector3.down * jumpCancellationForce;
             yield return new WaitForFixedUpdate();
         }
 
@@ -225,12 +242,12 @@ public class PlayerController : MonoBehaviour
     IEnumerator DashRoutine()
     {
         isDashing               = true;
-        myRigidbody.isKinematic = true;
+        MyRigidbody.isKinematic = true;
         yield return new WaitForSecondsRealtime(0.15f);
-        myRigidbody.isKinematic = false;
+        MyRigidbody.isKinematic = false;
 
-        myRigidbody.velocity = Vector3.zero;
-        myRigidbody.velocity = transform.forward * dashForce.x + transform.up * dashForce.y;
+        MyRigidbody.velocity = Vector3.zero;
+        MyRigidbody.velocity = transform.forward * dashForce.x + transform.up * dashForce.y;
 
         for (float t = 0; t < dashDuration; t += Time.deltaTime)
         {
