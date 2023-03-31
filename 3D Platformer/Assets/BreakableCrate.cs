@@ -1,25 +1,32 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class BreakableCrate : MonoBehaviour
 {
-    PlayerController playerRB;
     [SerializeField] GameObject particleEffect;
+    [SerializeField] GameObject dustEffect;
+    PlayerController playerRB;
+    MeshRenderer meshRenderer;
+    Collider collider;
 
     void Start()
     {
-        playerRB = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        playerRB     = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        meshRenderer = GetComponent<MeshRenderer>();
+        collider     = GetComponent<BoxCollider>();
     }
 
-    //TODO: refactor
     void OnCollisionEnter(Collision other)
     {
-        if (!other.gameObject.CompareTag("Player")) return;
-        if (playerRB.IsDashing)
-        {
-            //Destroy(gameObject);
-            gameObject.SetActive(false);
-            Instantiate(particleEffect, transform.position, Quaternion.identity);
-        }
+        if (other.gameObject.CompareTag("Player"))
+            if (playerRB.IsDashing)
+            {
+                particleEffect.GetComponent<ParticleSystem>().Play();
+                dustEffect           = Instantiate(dustEffect, transform.position, transform.rotation);
+                meshRenderer.enabled = false;
+                collider.enabled     = false;
+                Destroy(gameObject, 1f);
+            }
     }
 }
