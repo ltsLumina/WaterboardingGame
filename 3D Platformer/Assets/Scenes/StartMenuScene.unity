@@ -209,8 +209,23 @@ PrefabInstance:
     - target: {fileID: 6169739006247276632, guid: 0a258f0ff18a44e4688737056daf6519,
         type: 3}
       propertyPath: m_Name
-      value: GameController
+      value: MenuController
       objectReference: {fileID: 0}
+    - target: {fileID: 6169739006247276632, guid: 0a258f0ff18a44e4688737056daf6519,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6169739006247276638, guid: 0a258f0ff18a44e4688737056daf6519,
+        type: 3}
+      propertyPath: slider
+      value: 
+      objectReference: {fileID: 540263206}
+    - target: {fileID: 6169739006247276638, guid: 0a258f0ff18a44e4688737056daf6519,
+        type: 3}
+      propertyPath: loadingScreen
+      value: 
+      objectReference: {fileID: 284058498}
     - target: {fileID: 6169739006247276639, guid: 0a258f0ff18a44e4688737056daf6519,
         type: 3}
       propertyPath: m_RootOrder
@@ -1464,7 +1479,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1925068273}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
         m_MethodName: LoadNext
         m_Mode: 1
         m_Arguments:

@@ -1,18 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using UnityEngine.UI;
 
 public static class SceneManagerExtended
 {
     private static int previousScene = 0;
-    static GameObject loadingScreen;
-    static Slider slider;
-    static private void Start()
-    {
-        loadingScreen = GameObject.Find("LoadingScreen");
-        slider = loadingScreen.GetComponent<Slider>();
-    }
+
+
     #region Static Methods
     /// <summary>
     /// Loads the scene with the specified build index.
@@ -65,22 +59,6 @@ public static class SceneManagerExtended
         }
 
         return buildIndex;
-    }
-    #endregion
-
-    #region Static IEnumerators
-    public static IEnumerator LoadingScreen()
-    {
-        LoadNextScene();
-        AsyncOperation operation = SceneManager.LoadSceneAsync(1);
-        loadingScreen.SetActive(true);
-        while (!operation.isDone)
-        {
-            slider.value = operation.progress;
-            Debug.Log(operation.progress);
-
-            yield return null;
-        }
     }
     #endregion
 }
