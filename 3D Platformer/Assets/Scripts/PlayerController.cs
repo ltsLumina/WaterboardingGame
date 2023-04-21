@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Vector3 groundCheckPosition = new (0f, -1f, 0f);
     [SerializeField] float groundCheckRadius = 0.3f;
     [SerializeField] LayerMask groundLayers;
-    [SerializeField] GameObject pauseScreen;
     readonly Collider[] groundCheckHits = new Collider[10]; //Only used as storage for optimization purposes
     Coroutine activeJumpBuffer;
     bool canDash;
@@ -45,7 +44,6 @@ public class PlayerController : MonoBehaviour
     bool isJumping;
     bool landingLock;
     public bool cursorLock;
-    public static bool gameIsPaused = false;
     Transform mainCamera;
     Vector2 movementInput;
 
@@ -78,26 +76,6 @@ public class PlayerController : MonoBehaviour
         MyRigidbody = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
-    }
-
-    private void OnPause()
-    {
-        //If game is not paused, pause and show screen.
-        if (!gameIsPaused)
-        {
-            Time.timeScale = 0f;
-            gameIsPaused = true;
-            pauseScreen.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-        }
-        //If game is  paused, unpause and hide screen.
-        else if (gameIsPaused)
-        {
-            Time.timeScale = 1f;
-            gameIsPaused = false;
-            pauseScreen.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked;
-        }
     }
 
     void Update()
