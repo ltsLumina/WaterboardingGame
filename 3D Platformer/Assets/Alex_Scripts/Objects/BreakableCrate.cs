@@ -32,6 +32,8 @@ public class BreakableCrate : MonoBehaviour
             dustEffect.Play();
             meshRenderer.enabled = false;
             boxCollider.enabled  = false;
+
+            Debug.Assert(lifetime > 0, $"Lifetime is {lifetime} which is less than 0! Please set a positive value.");
             Destroy(gameObject, lifetime);
         }
     }

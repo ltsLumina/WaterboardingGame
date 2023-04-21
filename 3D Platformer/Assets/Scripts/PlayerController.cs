@@ -23,15 +23,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float coyoteTime = 0.1f;
     [SerializeField] float jumpBufferTime = 0.5f;
 
-    [Header("Dashing"), SerializeField, Tooltip("X is force forwards, Y is force upwards.")]
-    Vector2 dashForce = new (25f, 10f);
+    [Header("Dashing")]
+    [SerializeField, Tooltip("X is force forwards, Y is force upwards.")]
+    Vector2 dashForce = new(25f, 10f);
     [SerializeField] float minDashDuration = 0.5f;
     [SerializeField] float dashDuration = 1f;
 
     [Header("GroundCheck")]
-    [SerializeField] Vector3 groundCheckPosition = new (0f, -1f, 0f);
+    [SerializeField] Vector3 groundCheckPosition = new(0f, -1f, 0f);
     [SerializeField] float groundCheckRadius = 0.3f;
     [SerializeField] LayerMask groundLayers;
+    [SerializeField] GameObject pauseScreen;
     readonly Collider[] groundCheckHits = new Collider[10]; //Only used as storage for optimization purposes
     Coroutine activeJumpBuffer;
     bool canDash;
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour
     bool isJumping;
     bool landingLock;
     public bool cursorLock;
+    public static bool gameIsPaused;
     Transform mainCamera;
     Vector2 movementInput;
 
@@ -60,21 +63,39 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     //Cached references
     readonly static int Dashing = Animator.StringToHash("isDashing");
     readonly static int Grounded = Animator.StringToHash("isGrounded");
 
     void Awake()
     {
-        if (cursorLock)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        if (cursorLock) Cursor.lockState = CursorLockMode.Locked;
         MyRigidbody = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
+    }
+
+    void OnPause()
+    {
+        //If game is not paused, pause and show screen.
+        if (pauseScreen == null) return;
+
+        if (!gameIsPaused)
+        {
+            Time.timeScale = 0f;
+            gameIsPaused   = true;
+            pauseScreen.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        //If game is  paused, unpause and hide screen.
+        else if (gameIsPaused)
+        {
+            Time.timeScale = 1f;
+            gameIsPaused   = false;
+            pauseScreen.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     void Update()
@@ -99,13 +120,13 @@ public class PlayerController : MonoBehaviour
 
     void GroundCheck()
     {
-        isGrounded = Physics.OverlapSphereNonAlloc(transform.position + groundCheckPosition, groundCheckRadius,
-                                                   groundCheckHits, groundLayers) != 0;
+        isGrounded = Physics.OverlapSphereNonAlloc
+            (transform.position + groundCheckPosition, groundCheckRadius, groundCheckHits, groundLayers) != 0;
 
         canDash = true;
     }
 
-    void ApplyGravityMultiplier() { MyRigidbody.velocity += Vector3.down * gravityMultiplier; }
+    void ApplyGravityMultiplier() => MyRigidbody.velocity += Vector3.down * gravityMultiplier;
 
     #region Animation updates from Update
     void UpdateAnimationStates()
@@ -158,14 +179,12 @@ public class PlayerController : MonoBehaviour
         MyRigidbody.rotation = Quaternion.Euler(0, angle, 0);
     }
 
-    void UpdateCoyoteTimeCounter()
-    {
+    void UpdateCoyoteTimeCounter() =>
         coyoteTimeCounter += isGrounded && !isJumping ? -coyoteTimeCounter : Time.deltaTime;
-    }
     #endregion
 
     #region Movement
-    void OnMove(InputValue value) { movementInput = value.Get<Vector2>(); }
+    void OnMove(InputValue value) => movementInput = value.Get<Vector2>();
 
     void Movement()
     {
