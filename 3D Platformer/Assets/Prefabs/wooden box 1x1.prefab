@@ -3840,10 +3840,10 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 1
+    radiusScale: 0.1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 8
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4879,12 +4879,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3782447382574909108}
-  - component: {fileID: 7539257337213998883}
+  - component: {fileID: -6107347293660781665}
   - component: {fileID: 275326850982791441}
   - component: {fileID: 2609518251102977499}
   - component: {fileID: -5434718699356318450}
   - component: {fileID: 1569628447}
-  - component: {fileID: 993597774397202570}
   m_Layer: 3
   m_Name: wooden box 1x1
   m_TagString: Untagged
@@ -4900,7 +4899,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4554867063671987214}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.788237, y: 0.64, z: -4.480415}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4909,7 +4908,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7539257337213998883
+--- !u!114 &-6107347293660781665
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4921,7 +4920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1600fb245363b242a1edfb87d2b74ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 5
+  time: 3
 --- !u!33 &275326850982791441
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4998,19 +4997,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 100, y: 100, z: 100}
   m_Center: {x: -0.00012207031, y: -0.0000038146973, z: 0}
---- !u!114 &993597774397202570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4554867063671987214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1600fb245363b242a1edfb87d2b74ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifetime: 0
 --- !u!1001 &1958843110
 PrefabInstance:
   m_ObjectHideFlags: 0

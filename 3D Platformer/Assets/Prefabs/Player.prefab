@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5264029762147553674}
+  - component: {fileID: 5264029762147553672}
   - component: {fileID: 5264029762147553677}
   - component: {fileID: 5264029762147553676}
   - component: {fileID: 5264029762147553679}
   - component: {fileID: 5264029762147553675}
-  - component: {fileID: 5264029762147553672}
   - component: {fileID: 5264029762147553673}
   - component: {fileID: 356097526}
   m_Layer: 0
@@ -39,6 +39,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5264029762147553672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5264029762147553678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 412a748181bbd2a4eba1c37f65ad819b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 100
+  maxHealth: 100
+  topSpeed: 7
+  acceleration: 4
+  deceleration: 2
+  jumpForce: 22
+  jumpCancellationForce: 2
+  gravityMultiplier: 0.7
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
+  dashForce: {x: 14, y: 10}
+  minDashDuration: 0.5
+  dashDuration: 1
+  groundCheckPosition: {x: 0, y: -1, z: 0}
+  groundCheckRadius: 0.2
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 72
+  pauseScreen: {fileID: 0}
+  cursorLock: 0
 --- !u!33 &5264029762147553677
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -119,34 +151,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &5264029762147553672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5264029762147553678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 412a748181bbd2a4eba1c37f65ad819b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topSpeed: 7
-  acceleration: 4
-  deacceleration: 10
-  jumpForce: 22
-  jumpCancellationForce: 2
-  gravityMultiplier: 0.7
-  coyoteTime: 0.1
-  jumpBufferTime: 0.1
-  dashForce: {x: 14, y: 10}
-  minDashDuration: 0.5
-  dashDuration: 1
-  groundCheckPosition: {x: 0, y: -1, z: 0}
-  groundCheckRadius: 0.2
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 72
 --- !u!114 &5264029762147553673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -823,7 +827,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &3291840817113144418
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -840,7 +844,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!4 &5657511102702472372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ba930c92125cc44482f71b0a7ba266c,

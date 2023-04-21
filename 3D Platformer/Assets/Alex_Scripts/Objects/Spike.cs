@@ -16,12 +16,13 @@ public class Spike : MonoBehaviour
         playerRB = player.GetComponent<Rigidbody>();
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnCollisionEnter(Collision other) //TODO: Player can dash infinitely if they dash into a spike.
     {
         if (other.gameObject.CompareTag("Player"))
         {
             if (!player.IsDashing)
             {
+                player.IsDashing  = false;
                 SpikeCollision();
             }
             else
