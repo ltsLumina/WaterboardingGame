@@ -30,21 +30,12 @@ public class MenuController : MonoBehaviour
     }
     #endregion
 
-    private void OnPause()
+    public void Resume(GameObject gameObject)
     {
-        if (!gameIsPaused)
-        {
-            gameIsPaused = true;
-            GameObject pauseScreen = GameObject.Find("PauseScreen");
-            pauseScreen.SetActive(true);
-        }
-        else if (gameIsPaused)
-        {
-            gameIsPaused = false;
-            GameObject pauseScreen = GameObject.Find("PauseScreen");
-            pauseScreen.SetActive(false);
-
-        }
+        Time.timeScale = 1.0f;
+        gameIsPaused = false;
+        gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
     }
     public IEnumerator LoadingScreen()
     {

@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     readonly static int Dashing = Animator.StringToHash("isDashing");
     readonly static int Grounded = Animator.StringToHash("isGrounded");
 
-    void Start()
+    void Awake()
     {
         if (cursorLock)
         {
@@ -82,16 +82,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnPause()
     {
+        //If game is not paused, pause and show screen.
         if (!gameIsPaused)
         {
+            Time.timeScale = 0f;
             gameIsPaused = true;
             pauseScreen.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
         }
+        //If game is  paused, unpause and hide screen.
         else if (gameIsPaused)
         {
+            Time.timeScale = 1f;
             gameIsPaused = false;
             pauseScreen.SetActive(false);
-
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
