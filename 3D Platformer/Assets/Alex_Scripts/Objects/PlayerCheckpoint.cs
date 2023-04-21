@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class PlayerCheckpoint : MonoBehaviour
 {
+    [SerializeField] Vector3 offsetPosition = new(2, 2, 0);
+
     void Start()
     {
         switch (Checkpoint.HasCheckpoint)
         {
             case true:
-                transform.position = Checkpoint.LastCheckpointPosition;
+                transform.position = Checkpoint.LastCheckpointPosition + offsetPosition;
                 transform.rotation = Checkpoint.LastCheckpointRotation;
                 break;
 

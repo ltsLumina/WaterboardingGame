@@ -39,14 +39,13 @@ public class PlayerController : MonoBehaviour
     float coyoteTimeCounter;
     float currentSpeed;
     float fallingTimer;
-    bool isDashing;
     bool isGrounded;
     bool isJumping;
     bool landingLock;
     Transform mainCamera;
     Vector2 movementInput;
 
-    public bool IsDashing => isDashing;
+    public bool IsDashing { get; set; }
 
     public Rigidbody MyRigidbody { get; set; }
 
@@ -107,7 +106,7 @@ public class PlayerController : MonoBehaviour
     void UpdateAnimationStates()
     {
         //The "animation update - code" needs refactoring. This is not a priority.
-        characterAnimator.SetBool(Dashing, isDashing);
+        characterAnimator.SetBool(Dashing, IsDashing);
 
         if (isGrounded)
         {
@@ -147,7 +146,7 @@ public class PlayerController : MonoBehaviour
     #region Called from Update
     void Rotation()
     {
-        if (isDashing) return;
+        if (IsDashing) return;
         if (movementInput.magnitude < Mathf.Epsilon) return;
 
         float angle = Mathf.Atan2(movementInput.x, movementInput.y) * Mathf.Rad2Deg + mainCamera.eulerAngles.y;
@@ -165,7 +164,7 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
-        if (isDashing) return;
+        if (IsDashing) return;
 
         float targetSpeed = movementInput.magnitude < Mathf.Epsilon ? 0 : topSpeed;
         float t           = targetSpeed             == 0 ? deceleration : acceleration;
@@ -234,14 +233,14 @@ public class PlayerController : MonoBehaviour
     #region Dashing
     void OnDash(InputValue value)
     {
-        if (!value.isPressed || !canDash || isDashing) return;
+        if (!value.isPressed || !canDash || IsDashing) return;
 
         StartCoroutine(DashRoutine());
     }
 
     IEnumerator DashRoutine()
     {
-        isDashing               = true;
+        IsDashing               = true;
         MyRigidbody.isKinematic = true;
         yield return new WaitForSecondsRealtime(0.15f);
         MyRigidbody.isKinematic = false;
@@ -257,7 +256,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded) break;
         }
 
-        isDashing = false;
+        IsDashing = false;
     }
     #endregion
 }
