@@ -4883,7 +4883,6 @@ GameObject:
   - component: {fileID: 275326850982791441}
   - component: {fileID: 2609518251102977499}
   - component: {fileID: -5434718699356318450}
-  - component: {fileID: 1569628447}
   m_Layer: 3
   m_Name: wooden box 1x1
   m_TagString: Untagged
@@ -4920,7 +4919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1600fb245363b242a1edfb87d2b74ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 3
+  lifetime: 3
 --- !u!33 &275326850982791441
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4984,19 +4983,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 100, y: 100, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &1569628447
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4554867063671987214}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 100, y: 100, z: 100}
-  m_Center: {x: -0.00012207031, y: -0.0000038146973, z: 0}
 --- !u!1001 &1958843110
 PrefabInstance:
   m_ObjectHideFlags: 0
