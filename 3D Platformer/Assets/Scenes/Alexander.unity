@@ -491,7 +491,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 773644978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.73, y: 0.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2765,6 +2765,16 @@ PrefabInstance:
       propertyPath: rotationPoint
       value: 
       objectReference: {fileID: 773644978}
+    - target: {fileID: 530793461809336288, guid: 9bcc5d0053fe790459e6df9977125573,
+        type: 3}
+      propertyPath: rotationVector.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 530793461809336288, guid: 9bcc5d0053fe790459e6df9977125573,
+        type: 3}
+      propertyPath: rotationTypeValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 530793461809336291, guid: 9bcc5d0053fe790459e6df9977125573,
         type: 3}
       propertyPath: m_IsTrigger
