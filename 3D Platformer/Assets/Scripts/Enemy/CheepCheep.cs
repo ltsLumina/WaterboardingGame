@@ -1,4 +1,5 @@
 #region
+using System;
 using UnityEngine;
 #endregion
 
@@ -73,7 +74,9 @@ public class CheepCheep : MonoBehaviour
         Vector3 axis = rotationAxis switch
         { RotationAxis.X => Vector3.right,
           RotationAxis.Y => Vector3.up,
-          RotationAxis.Z => Vector3.forward, };
+          RotationAxis.Z => Vector3.forward,
+          _              => throw new ArgumentOutOfRangeException()
+        };
 
         // Determines whether the rotation is done around a GameObject or a Vector3
         switch (rotationTypeValue)
@@ -85,6 +88,9 @@ public class CheepCheep : MonoBehaviour
             case RotationType.Vector3:
                 transform.RotateAround(rotationVector, axis, swimSpeed * Time.deltaTime);
                 break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 

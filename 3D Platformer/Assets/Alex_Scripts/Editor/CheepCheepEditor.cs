@@ -11,6 +11,11 @@ public class CheepCheepEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        if (GUILayout.Button("Orient CheepCheep", GUILayout.Height(30)))
+        {
+            OrientCheepCheepToCamera();
+        }
+
         DrawDefaultInspector();
 
         var cheepCheep = (CheepCheep)target;
