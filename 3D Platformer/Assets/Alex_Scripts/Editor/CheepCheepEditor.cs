@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,6 +12,11 @@ public class CheepCheepEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        if (GUILayout.Button("Orient CheepCheep", GUILayout.Height(30)))
+        {
+            OrientCheepCheepToCamera();
+        }
+
         DrawDefaultInspector();
 
         var cheepCheep = (CheepCheep)target;
@@ -43,7 +49,9 @@ public class CheepCheepEditor : Editor
         Vector3 rotationAxis = cheepCheep.RotationAxisValue switch
         { CheepCheep.RotationAxis.X => Vector3.right,
           CheepCheep.RotationAxis.Y => Vector3.up,
-          CheepCheep.RotationAxis.Z => Vector3.forward, };
+          CheepCheep.RotationAxis.Z => Vector3.forward,
+          _                         => throw new ArgumentOutOfRangeException()
+        };
 
         Handles.DrawWireDisc(rotationPoint + rotationAxis, rotationAxis, radius);
     }
