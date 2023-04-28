@@ -259,7 +259,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!value.isPressed || !canDash || IsDashing) return;
 
-        StartCoroutine(DashRoutine());
+        if (isGrounded) StartCoroutine(DashRoutine());
     }
 
     IEnumerator DashRoutine()
