@@ -2942,6 +2942,11 @@ PrefabInstance:
       propertyPath: rotationPoint
       value: 
       objectReference: {fileID: 773644978}
+    - target: {fileID: 530793461809336291, guid: 9bcc5d0053fe790459e6df9977125573,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 530793461809336292, guid: 9bcc5d0053fe790459e6df9977125573,
         type: 3}
       propertyPath: m_RootOrder
