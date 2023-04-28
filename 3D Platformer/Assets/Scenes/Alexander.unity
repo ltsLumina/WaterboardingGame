@@ -2019,12 +2019,12 @@ PrefabInstance:
     - target: {fileID: 1013520799630629586, guid: 3c33f893f44f2c944bef16e1790d3e5f,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.12768753
+      value: 0.1276875
       objectReference: {fileID: 0}
     - target: {fileID: 1013520799630629586, guid: 3c33f893f44f2c944bef16e1790d3e5f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.1276875
+      value: -0.12768753
       objectReference: {fileID: 0}
     - target: {fileID: 1013520799630629586, guid: 3c33f893f44f2c944bef16e1790d3e5f,
         type: 3}
