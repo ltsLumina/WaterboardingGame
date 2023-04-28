@@ -258,8 +258,7 @@ public class PlayerController : MonoBehaviour
     void OnDash(InputValue value)
     {
         if (!value.isPressed || !canDash || IsDashing) return;
-
-        if (isGrounded) StartCoroutine(DashRoutine());
+        StartCoroutine(DashRoutine());
     }
 
     IEnumerator DashRoutine()
