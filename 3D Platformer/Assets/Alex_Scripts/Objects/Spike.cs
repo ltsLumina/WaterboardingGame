@@ -22,12 +22,10 @@ public class Spike : MonoBehaviour
         {
             if (!player.IsDashing)
             {
-                player.IsDashing  = false;
                 SpikeCollision();
             }
             else
             {
-                player.IsDashing  = false;
                 playerRB.velocity = Vector3.zero;
                 SpikeCollision();
             }
