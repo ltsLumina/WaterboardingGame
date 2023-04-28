@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationTypeValue: 0
-  rotationAxis: 0
+  rotationAxis: 2
   rotationDirection: 0
   isSwimming: 1
   swimSpeed: 120
