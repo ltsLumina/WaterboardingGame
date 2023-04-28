@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2879434735036124697}
+  - component: {fileID: 2879434735036124695}
   - component: {fileID: 2879434735036124698}
   - component: {fileID: 2879434735036124699}
   - component: {fileID: 2879434735036124700}
   - component: {fileID: 2879434735036124696}
-  - component: {fileID: 2879434735036124695}
   m_Layer: 3
   m_Name: Winpoint
   m_TagString: Winpoint
@@ -37,6 +37,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2879434735036124695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2879434735036124701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b3d1c27ccaf6c428e852a67b3812d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayInSeconds: 2
 --- !u!33 &2879434735036124698
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -113,19 +126,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 5.8301888, z: 1}
   m_Center: {x: 0, y: 2.4150944, z: 0}
---- !u!114 &2879434735036124695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2879434735036124701}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6b3d1c27ccaf6c428e852a67b3812d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delayInSeconds: 2
 --- !u!1 &2879434735201361531
 GameObject:
   m_ObjectHideFlags: 0
