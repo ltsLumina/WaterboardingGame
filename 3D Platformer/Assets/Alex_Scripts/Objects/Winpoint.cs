@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UsefulMethods;
 
 public class Winpoint : MonoBehaviour
@@ -13,7 +14,7 @@ public class Winpoint : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             DelayTaskAsync(SceneManagerExtended.ReloadScene, delayInSeconds).AsTask();
-            Time.timeScale = 0.35f;
+            Time.timeScale = Mathf.Lerp(1, 0.55f, delayInSeconds);
         }
     }
 

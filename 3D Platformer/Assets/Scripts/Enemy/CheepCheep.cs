@@ -94,10 +94,10 @@ public class CheepCheep : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
-        const int damage = 10; // TODO: Make this a variable
+        const int damage = 10; // TODO: Make this a variable and cache the player controller/health.
         other.gameObject.GetComponent<PlayerController>().CurrentHealth -= damage;
         Debug.Log($"Player took {damage} damage!");
     }
