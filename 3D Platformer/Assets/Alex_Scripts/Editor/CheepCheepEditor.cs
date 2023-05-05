@@ -21,16 +21,25 @@ public class CheepCheepEditor : Editor
 
         var cheepCheep = (CheepCheep)target;
 
-        // If the condition is true, show the serialized field.
-        if (cheepCheep.RotationTypeValue == CheepCheep.RotationType.Vector3)
+        switch (cheepCheep.RotationTypeValue)
         {
-            SerializedProperty myFieldProp = serializedObject.FindProperty("rotationVector");
-            EditorGUILayout.PropertyField(myFieldProp);
-        }
-        else if (cheepCheep.RotationTypeValue == CheepCheep.RotationType.GameObject)
-        {
-            SerializedProperty myFieldProp = serializedObject.FindProperty("rotationPoint");
-            EditorGUILayout.PropertyField(myFieldProp);
+            // If the condition is true, show the serialized field.
+            case CheepCheep.RotationType.Vector3:
+            {
+                SerializedProperty myFieldProp = serializedObject.FindProperty("rotationVector");
+                EditorGUILayout.PropertyField(myFieldProp);
+                break;
+            }
+
+            case CheepCheep.RotationType.GameObject:
+            {
+                SerializedProperty myFieldProp = serializedObject.FindProperty("rotationPoint");
+                EditorGUILayout.PropertyField(myFieldProp);
+                break;
+            }
+
+            default:
+                throw new ArgumentOutOfRangeException();
         }
 
         // Apply any changes made to the serialized object.
