@@ -1,7 +1,9 @@
 #region
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UsefulMethods;
 #endregion
 
 [RequireComponent(typeof(Rigidbody))]
@@ -49,6 +51,8 @@ public class PlayerController : MonoBehaviour
     Transform mainCamera;
     Vector2 movementInput;
 
+    bool isDead;
+
     public bool IsDashing { get; set; }
 
     public Rigidbody MyRigidbody { get; set; }
@@ -60,6 +64,12 @@ public class PlayerController : MonoBehaviour
         {
             currentHealth = value;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+            isDead = currentHealth <= 0;
+
+            if (!isDead) return;
+            Debug.Log("Player Died!");
+            // TODO: death
         }
     }
 
