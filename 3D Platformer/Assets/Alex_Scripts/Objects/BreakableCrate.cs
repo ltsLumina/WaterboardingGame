@@ -6,7 +6,6 @@ public class BreakableCrate : MonoBehaviour
     [Header("Breakable Crate Settings")]
     [Range(1,5), Tooltip("The time to wait before destroying all particles that spawn when the crate brakes.")]
     [SerializeField] float lifetime;
-    [SerializeField] GameObject parentBox;
 
     [Header("Cached References")]
     ParticleSystem particleEffect;
@@ -22,12 +21,6 @@ public class BreakableCrate : MonoBehaviour
         player         = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         meshRenderer   = GetComponent<MeshRenderer>();
         boxCollider    = GetComponent<BoxCollider>();
-    }
-
-    void Update()
-    {
-        if (parentBox != null)
-            transform.position = new (transform.position.x, parentBox.transform.position.y, transform.position.z);
     }
 
     void OnCollisionEnter(Collision other)
