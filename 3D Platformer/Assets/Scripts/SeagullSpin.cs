@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SeagullSpin : MonoBehaviour
 {
-    [SerializeField] float FlySpeed =1f;
+    [SerializeField] float flySpeed =1f;
 
-
-    private void Update()
+    void Update()
     {
-        transform.Rotate(new Vector3(0,FlySpeed,0)* Time.deltaTime);
+        transform.Rotate(new Vector3(0,flySpeed,0)* Time.deltaTime);
     }
 }
