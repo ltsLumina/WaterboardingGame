@@ -55,14 +55,35 @@ public class CheepCheep : MonoBehaviour
         if (isSwimming) Swim();
     }
 
+
     /// <summary>
     /// Flips the swim speed if the rotation direction is changed to make the fish move in the inverse direction.
     /// </summary>
-    void OnValidate() =>
-        swimSpeed = rotationDirection switch
-        { RotationDirection.Clockwise        => Mathf.Abs(swimSpeed),
-          RotationDirection.CounterClockwise => -Mathf.Abs(swimSpeed),
-          _                                  => swimSpeed };
+    void OnValidate() //TODO: swimming broken
+    {
+        var localScale = transform.localScale;
+
+        switch (rotationDirection)
+        {
+            case RotationDirection.Clockwise:
+                swimSpeed = Mathf.Abs(swimSpeed);
+                // flip sprite
+                localScale           = new (localScale.x, localScale.y, localScale.z);
+                transform.localScale = localScale;
+                break;
+
+            case RotationDirection.CounterClockwise:
+                swimSpeed = -Mathf.Abs(swimSpeed);
+                // flip sprite
+                localScale           = new (localScale.x, localScale.y, localScale.z);
+                transform.localScale = localScale;
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+                break;
+        }
+    }
 
     /// <summary>
     /// Rotates the GameObject around a point (GameObject) or a Vector3.
@@ -71,12 +92,29 @@ public class CheepCheep : MonoBehaviour
     {
         if (RotationPoint == null) return;
 
-        Vector3 axis = rotationAxis switch
-        { RotationAxis.X => Vector3.right,
-          RotationAxis.Y => Vector3.up,
-          RotationAxis.Z => Vector3.forward,
-          _              => throw new ArgumentOutOfRangeException()
-        };
+        Vector3 axis;
+
+        switch (rotationAxis)
+        {
+            case RotationAxis.X:
+                axis = Vector3.right;
+
+                transform.localRotation = Quaternion.Euler(transform.eulerAngles.x, 90, transform.eulerAngles.z);
+                break;
+
+            case RotationAxis.Y:
+                axis = Vector3.up;
+                break;
+
+            case RotationAxis.Z:
+                axis = Vector3.forward;
+
+                transform.localRotation = Quaternion.Euler(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
 
         // Determines whether the rotation is done around a GameObject or a Vector3
         switch (rotationTypeValue)
@@ -97,7 +135,9 @@ public class CheepCheep : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
+
         const int damage = 10; // TODO: Make this a variable and cache the player controller/health.
+
         other.gameObject.GetComponent<PlayerController>().CurrentHealth -= damage;
         Debug.Log($"Player took {damage} damage!");
     }
