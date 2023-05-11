@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -24,8 +23,11 @@ public class Checkpoint : MonoBehaviour
         LastCheckpointRotation = other.transform.rotation;
         HasCheckpoint          = true;
         Debug.Log("Checkpoint saved!");
+
+        //TODO: Play checkpoint sound and particle effect!
     }
 
+#if UNITY_EDITOR
     void Update() => DEBUG_ResetCheckpoint();
 
     void DEBUG_ResetCheckpoint()
@@ -34,6 +36,7 @@ public class Checkpoint : MonoBehaviour
         HasCheckpoint = false;
         Debug.Log("Checkpoint reset.");
     }
+#endif
 
     void OnDrawGizmos()
     {
