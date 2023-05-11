@@ -53,6 +53,7 @@ MonoBehaviour:
   rotationDirection: 0
   isSwimming: 1
   swimSpeed: 120
+  impactDamage: 20
   rotationPoint: {fileID: 0}
   rotationVector: {x: 0, y: 0, z: 0}
 --- !u!33 &530793461809336289
@@ -116,7 +117,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.81
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8072917872744694952
 PrefabInstance:

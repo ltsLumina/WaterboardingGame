@@ -13,11 +13,16 @@ public class CheepCheep : MonoBehaviour
     [Header("Configurable Parameters")]
     [SerializeField] bool isSwimming = true;
     [SerializeField] float swimSpeed = 20f;
+    [SerializeField] int impactDamage;
 
     // Always appears at the bottom due to editor scripting. This is done to make the inspector more readable.
     // These fields are used to determine whether the rotation point or rotation vector should be used.
     [SerializeField, HideInInspector] GameObject rotationPoint;
     [SerializeField, HideInInspector] Vector3 rotationVector;
+
+    // Cached References
+    PlayerController player;
+    float playerHealth;
 
     #region Enums (RotationType, RotationAxis, RotationDirection)
     public enum RotationType
@@ -50,6 +55,12 @@ public class CheepCheep : MonoBehaviour
     public GameObject RotationPoint => rotationPoint;
     #endregion
 
+    void Start()
+    {
+        player       = FindObjectOfType<PlayerController>();
+        playerHealth = player.CurrentHealth;
+    }
+
     void Update()
     {
         if (isSwimming) Swim();
@@ -65,14 +76,15 @@ public class CheepCheep : MonoBehaviour
         {
             case RotationDirection.Clockwise:
                 swimSpeed = Mathf.Abs(swimSpeed);
-                // Set localscale x to 1
+
+                // Flip localscale depending on the rotaion direction
                 transform.localScale = new Vector3(1, 1, 1);
 
                 break;
 
             case RotationDirection.CounterClockwise:
                 swimSpeed = -Mathf.Abs(swimSpeed);
-                // Set localscale x to -1
+                // Flip localscale depending on the rotaion direction
                 transform.localScale = new Vector3(-1, 1, 1);
 
                 break;
@@ -133,9 +145,10 @@ public class CheepCheep : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player")) return;
 
-        const int damage = 10; // TODO: Make this a variable and cache the player controller/health.
+        //-TODO: do something to indicate player takes damage here
 
-        other.gameObject.GetComponent<PlayerController>().CurrentHealth -= damage;
-        Debug.Log($"Player took {damage} damage!");
+        // damage the player
+        playerHealth -= impactDamage;
+        Debug.Log($"Player took {impactDamage} damage!");
     }
 }

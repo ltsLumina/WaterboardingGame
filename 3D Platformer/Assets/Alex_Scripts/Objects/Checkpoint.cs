@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -8,6 +9,13 @@ public class Checkpoint : MonoBehaviour
     public static Vector3 LastCheckpointPosition { get; private set; }
     public static Quaternion LastCheckpointRotation { get; private set; }
     public static bool HasCheckpoint { get; private set; }
+
+#if UNITY_EDITOR
+    void Awake()
+    {
+        HasCheckpoint = false;
+    }
+#endif
 
     void OnTriggerEnter(Collider other)
     {
