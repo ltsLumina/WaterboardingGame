@@ -61,27 +61,24 @@ public class CheepCheep : MonoBehaviour
     /// </summary>
     void OnValidate() //TODO: swimming broken
     {
-        var localScale = transform.localScale;
-
         switch (rotationDirection)
         {
             case RotationDirection.Clockwise:
                 swimSpeed = Mathf.Abs(swimSpeed);
-                // flip sprite
-                localScale           = new (localScale.x, localScale.y, localScale.z);
-                transform.localScale = localScale;
+                // Set localscale x to 1
+                transform.localScale = new Vector3(1, 1, 1);
+
                 break;
 
             case RotationDirection.CounterClockwise:
                 swimSpeed = -Mathf.Abs(swimSpeed);
-                // flip sprite
-                localScale           = new (localScale.x, localScale.y, localScale.z);
-                transform.localScale = localScale;
+                // Set localscale x to -1
+                transform.localScale = new Vector3(-1, 1, 1);
+
                 break;
 
             default:
                 throw new ArgumentOutOfRangeException();
-                break;
         }
     }
 
