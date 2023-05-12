@@ -1,10 +1,7 @@
 #region
-using System;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UsefulMethods;
 #endregion
 
 [RequireComponent(typeof(Rigidbody))]
