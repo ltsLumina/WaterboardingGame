@@ -1,12 +1,14 @@
 using System;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.ShortcutManagement;
+#endif
 using UnityEngine;
 
+#if UNITY_EDITOR
 internal static class UsefulShortcuts
 {
     /// <summary>
@@ -20,6 +22,7 @@ internal static class UsefulShortcuts
         var method   = type.GetMethod("Clear");
         method?.Invoke(new (), null);
     }
+#endif
 
     /// <summary>
     /// A collection of debugging shortcuts.
@@ -59,8 +62,8 @@ internal static class UsefulShortcuts
         SceneManagerExtended.ReloadScene();
         Debug.Log("Scene reloaded.");
     }
-#endif
 }
+#endif
 
 public static class UsefulMethods
 {
@@ -79,46 +82,5 @@ public static class UsefulMethods
         await UniTask.Delay(timeSpan, cancellationToken: cancellationToken);
         action();
         if (debugLog) Debug.Log("Action completed.");
-    }
-
-    /// <summary>
-    /// !WARNING! This method is not asynchronous, and will block the main thread, causing the game to freeze.
-    /// However, the purpose of this method is to allow you to call a method after a delay, without having to make the method asynchronous.
-    /// Unsure if this method even works in its current state.
-    /// </summary>
-    /// <param name="action">The action or method to run.</param>
-    /// <param name="delayInSeconds">The delay before running the method.</param>
-    /// <param name="debugLog">Whether or not to debug the waiting message and the completion message.</param>
-    /// <param name="onComplete">An action to be completed after the initial action is finished. Not required to be used.</param>
-    [Obsolete("This method is not finished or has been deprecated. Use 'DoAfterDelayAsync' instead.")]
-    public static void DoAfterDelay(Action action, float delayInSeconds, bool debugLog = false, Action onComplete = null)
-    {
-        if (debugLog) Debug.Log("Waiting for " + delayInSeconds + " seconds...");
-        var timeSpan = TimeSpan.FromSeconds(delayInSeconds);
-        Task.Delay(timeSpan).ContinueWith(_ =>
-        {
-            action();
-            if (debugLog) Debug.Log("Action completed.");
-            onComplete?.Invoke();
-        });
-    }
-}
-
-public class ReadOnlyAttribute : PropertyAttribute
-{ }
-
-/// <summary>
-/// Allows you to add '[ReadOnly]' before a variable so that it is shown but not editable in the inspector.
-/// Small but useful script, to make your inspectors look pretty and useful :D
-/// <example> [SerializedField, ReadOnly] int myInt; </example>
-/// </summary>
-[CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
-public class ReadOnlyPropertyDrawer : PropertyDrawer
-{
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-    {
-        GUI.enabled = false;
-        EditorGUI.PropertyField(position, property, label);
-        GUI.enabled = true;
     }
 }

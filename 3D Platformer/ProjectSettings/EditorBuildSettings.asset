@@ -9,6 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/StartMenuScene.unity
     guid: 15bede3d06576cf43b6009481a0fb1df
   - enabled: 1
-    path: Assets/Scenes/Level 1.unity
-    guid: 68c91c5f27ae7f54ba7f94d978c6baa3
-  m_configObjects: {}
+    path: Assets/Scenes/Alex_Level 1.unity
+    guid: a7635df8946966a4c90a03fb733eb2a5
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: ec5cec1597a735b4fbf7acbe07215b17,
+      type: 2}

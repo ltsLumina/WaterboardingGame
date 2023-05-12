@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BreakableCrate : MonoBehaviour
@@ -17,7 +18,7 @@ public class BreakableCrate : MonoBehaviour
     {
         particleEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
         dustEffect     = transform.GetChild(1).GetComponent<ParticleSystem>();
-        player       = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        player         = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         meshRenderer   = GetComponent<MeshRenderer>();
         boxCollider    = GetComponent<BoxCollider>();
     }

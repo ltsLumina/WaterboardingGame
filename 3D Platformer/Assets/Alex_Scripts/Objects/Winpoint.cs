@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using static UsefulMethods;
 
 public class Winpoint : MonoBehaviour
