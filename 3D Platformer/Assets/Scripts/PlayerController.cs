@@ -306,7 +306,6 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         SceneManagerExtended.ReloadScene();
-        Time.timeScale = Mathf.Lerp(1, 0.55f, 1);
     }
 
     void OnDestroy() => onDeath -= DoPlayerDeath;
