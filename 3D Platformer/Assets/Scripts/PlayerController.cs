@@ -43,9 +43,15 @@ public class PlayerController : MonoBehaviour
     float coyoteTimeCounter;
     float currentSpeed;
     float fallingTimer;
+    public float FallingTimer { get => fallingTimer; private set => fallingTimer = value; }
     bool isGrounded;
+    public bool IsGrounded { get => isGrounded; private set => isGrounded = value; }
+
     bool isJumping;
+    public bool IsJumping { get => isJumping; private set => isJumping = value; }
+
     bool landingLock;
+    public bool LandingLock { get => landingLock; private set => landingLock = value; }
     public bool cursorLock;
     public static bool gameIsPaused;
     Transform mainCamera;
