@@ -305,5 +305,6 @@ public class PlayerController : MonoBehaviour
         SceneManagerExtended.ReloadScene();
     }
 
+    // Unsubscribe from event.
     void OnDestroy() => onDeath -= DoPlayerDeath;
 }
