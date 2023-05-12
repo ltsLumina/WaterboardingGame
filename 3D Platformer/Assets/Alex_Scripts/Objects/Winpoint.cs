@@ -20,6 +20,6 @@ public class Winpoint : MonoBehaviour
     void Update()
     {
         // Debugging.
-        if (Input.GetKeyDown(KeyCode.Backspace)) DelayTaskAsync(SceneManagerExtended.ReloadScene, delayInSeconds).AsTask();
+        if (Input.GetKeyDown(KeyCode.R)) DelayTaskAsync(SceneManagerExtended.ReloadScene, delayInSeconds).AsTask();
     }
 }
