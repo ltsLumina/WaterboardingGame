@@ -1,28 +1,30 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class MenuController : MonoBehaviour
 {
-    [SerializeField] GameObject loadingScreen;
-    [SerializeField] Slider slider;
     [SerializeField] GameObject pauseScreen;
+    [SerializeField] Animator transition;
+    [SerializeField] float transitionTime = 1;
 
     public static bool gameIsPaused = false;
     #region
     public void LoadNext()
     {
-        StartCoroutine(LoadingScreen());
+        int sceneToLoad = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(LoadingScreen(sceneToLoad + 1));
     }
     public void Reload()
     {
         SceneManagerExtended.ReloadScene();
+        Time.timeScale = 1.0f;
     }
     public void LoadPrevious()
     {
-        SceneManagerExtended.LoadPreviousScene();
+        int sceneToLoad = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(LoadingScreen(sceneToLoad - 1));
     }
     public void Quit()
     {
@@ -58,16 +60,15 @@ public class MenuController : MonoBehaviour
         gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
     }
-    public IEnumerator LoadingScreen()
-    {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(1);
-        loadingScreen.SetActive(true);
-        while (!operation.isDone) 
-        {
-            //Debug.Log(operation.progress);
-            slider.value = operation.progress;
 
-            yield return null;
+    public IEnumerator LoadingScreen(int scene)
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(scene);
+        if (operation.isDone)
+        {
+            Time.timeScale = 1.0f;
         }
     }
 }
