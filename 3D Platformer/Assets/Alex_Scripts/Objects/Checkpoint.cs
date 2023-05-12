@@ -23,8 +23,6 @@ public class Checkpoint : MonoBehaviour
         //TODO: Play checkpoint sound and particle effect!
     }
 
-    void Update() { Debug.Log(LastCheckpointPosition); }
-
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
