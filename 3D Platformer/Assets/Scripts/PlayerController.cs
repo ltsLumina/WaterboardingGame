@@ -1,9 +1,7 @@
 #region
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UsefulMethods;
 #endregion
 
 [RequireComponent(typeof(Rigidbody))]
@@ -59,6 +57,10 @@ public class PlayerController : MonoBehaviour
 
     bool isDead;
 
+    // on death event
+    public delegate void OnDeath();
+    public event OnDeath onDeath;
+
     public bool IsDashing { get; set; }
 
     public Rigidbody MyRigidbody { get; set; }
@@ -75,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
             if (!isDead) return;
             Debug.Log("Player Died!");
-            // TODO: death
+            onDeath?.Invoke();
         }
     }
 
@@ -89,6 +91,9 @@ public class PlayerController : MonoBehaviour
         MyRigidbody = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
+
+        // on death event
+        onDeath += DoPlayerDeath;
     }
 
     void OnPause()
@@ -298,4 +303,15 @@ public class PlayerController : MonoBehaviour
         IsDashing = false;
     }
     #endregion
+
+    void DoPlayerDeath() => StartCoroutine(HandlePlayerDeath());
+
+    IEnumerator HandlePlayerDeath()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManagerExtended.ReloadScene();
+    }
+
+    // Unsubscribe from event.
+    void OnDestroy() => onDeath -= DoPlayerDeath;
 }
