@@ -41,21 +41,19 @@ public class PlayerController : MonoBehaviour
     float coyoteTimeCounter;
     float currentSpeed;
     float fallingTimer;
-    public float FallingTimer { get => fallingTimer; private set => fallingTimer = value; }
     bool isGrounded;
-    public bool IsGrounded { get => isGrounded; private set => isGrounded = value; }
-
     bool isJumping;
-    public bool IsJumping { get => isJumping; private set => isJumping = value; }
-
     bool landingLock;
-    public bool LandingLock { get => landingLock; private set => landingLock = value; }
     public bool cursorLock;
     public static bool gameIsPaused;
     Transform mainCamera;
     Vector2 movementInput;
 
     bool isDead;
+
+    // onDeath event
+    public delegate void OnDeath();
+    public event OnDeath onDeath;
 
     public bool IsDashing { get; set; }
 
@@ -73,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
             if (!isDead) return;
             Debug.Log("Player Died!");
-            // TODO: death
+            onDeath?.Invoke();
         }
     }
 
@@ -87,6 +85,8 @@ public class PlayerController : MonoBehaviour
         MyRigidbody = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
+
+        onDeath += DoPlayerDeath;
     }
 
     void OnPause()
@@ -296,4 +296,14 @@ public class PlayerController : MonoBehaviour
         IsDashing = false;
     }
     #endregion
+
+    void DoPlayerDeath() => StartCoroutine(HandlePlayerDeath());
+
+    IEnumerator HandlePlayerDeath()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManagerExtended.ReloadScene();
+    }
+
+    void OnDestroy() => onDeath -= DoPlayerDeath;
 }
