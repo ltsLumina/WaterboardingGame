@@ -308,6 +308,8 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator HandlePlayerDeath()
     {
+        var rigidbodyConstraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+        MyRigidbody.constraints = rigidbodyConstraints;
         yield return new WaitForSeconds(1f);
         SceneManagerExtended.ReloadScene();
     }
