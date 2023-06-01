@@ -37,6 +37,7 @@ public class Spike : MonoBehaviour
             Debug.Assert(force > 0, "Force is 0! Please set a positive value.");
 
             player.CurrentHealth -= damage;
+            StartCoroutine(player.HurtOverlay());
             playerRB.AddForce(Vector3.up * force, ForceMode.Impulse);
             Debug.Log($"Player took damage from a spike! \n New Health: {player.CurrentHealth}");
         }

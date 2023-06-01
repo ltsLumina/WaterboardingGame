@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     [Header("Health")]
     [SerializeField] float currentHealth = 100f;
     [SerializeField] float maxHealth = 100f;
+    [SerializeField] GameObject hurtOverlay;
+
+    
 
     [Header("Running")]
     [SerializeField] float topSpeed = 10f;
@@ -84,7 +87,7 @@ public class PlayerController : MonoBehaviour
     //Cached references
     readonly static int Dashing = Animator.StringToHash("isDashing");
     readonly static int Grounded = Animator.StringToHash("isGrounded");
-
+    
     void Awake()
     {
         if (cursorLock) Cursor.lockState = CursorLockMode.Locked;
@@ -117,6 +120,13 @@ public class PlayerController : MonoBehaviour
             pauseScreen.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public IEnumerator HurtOverlay()
+    {
+        hurtOverlay.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        hurtOverlay.SetActive(false);
     }
 
     void Update()
@@ -304,12 +314,16 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    void DoPlayerDeath() => StartCoroutine(HandlePlayerDeath());
+    public void DoPlayerDeath() => StartCoroutine(HandlePlayerDeath());
 
     IEnumerator HandlePlayerDeath()
     {
         var rigidbodyConstraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
         MyRigidbody.constraints = rigidbodyConstraints;
+
+        canDash   = false;
+        jumpForce = 0;
+
         yield return new WaitForSeconds(1f);
         SceneManagerExtended.ReloadScene();
     }

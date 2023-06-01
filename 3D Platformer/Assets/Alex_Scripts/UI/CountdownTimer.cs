@@ -72,10 +72,9 @@ public class CountdownTimer : MonoBehaviour
     void CD_PlayerDeath()
     {
         Debug.Log("Player Died!!");
-        Destroy(player);
+        player.DoPlayerDeath();
 
-        try
-        {
+        try {
             SceneManagerExtended.ReloadScene();
         } catch (Exception error)
         {

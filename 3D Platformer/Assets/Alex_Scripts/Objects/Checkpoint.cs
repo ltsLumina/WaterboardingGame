@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class Checkpoint : MonoBehaviour
 {
+    ParticleSystem touchEffect;
+    
     public static Vector3 LastCheckpointPosition { get; private set; }
     public static Quaternion LastCheckpointRotation { get; private set; }
     public static bool HasCheckpoint { get; private set; }
@@ -21,7 +23,23 @@ public class Checkpoint : MonoBehaviour
         Debug.Log("Checkpoint saved!");
 
         //TODO: Play checkpoint sound and particle effect!
+        touchEffect = GetComponentInChildren<ParticleSystem>();
+        touchEffect.Play();
     }
+
+#if UNITY_EDITOR
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L)) ResetCheckpoint();
+    }
+
+    static void ResetCheckpoint()
+    {
+        LastCheckpointPosition = Vector3.zero;
+        LastCheckpointRotation = Quaternion.identity;
+        HasCheckpoint          = false;
+    }
+#endif
 
     void OnDrawGizmos()
     {

@@ -22,7 +22,6 @@ public class CheepCheep : MonoBehaviour
 
     // Cached References
     PlayerController player;
-    float playerHealth;
 
     #region Enums (RotationType, RotationAxis, RotationDirection)
     public enum RotationType
@@ -55,11 +54,7 @@ public class CheepCheep : MonoBehaviour
     public GameObject RotationPoint => rotationPoint;
     #endregion
 
-    void Start()
-    {
-        player       = FindObjectOfType<PlayerController>();
-        playerHealth = player.CurrentHealth;
-    }
+    void Start() => player = FindObjectOfType<PlayerController>();
 
     void Update()
     {
@@ -148,7 +143,8 @@ public class CheepCheep : MonoBehaviour
         //-TODO: do something to indicate player takes damage here
 
         // damage the player
-        playerHealth -= impactDamage;
+        player.CurrentHealth -= impactDamage;
+        StartCoroutine(player.HurtOverlay());
         Debug.Log($"Player took {impactDamage} damage!");
     }
 }
