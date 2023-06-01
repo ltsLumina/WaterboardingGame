@@ -3,6 +3,7 @@
 /// <summary>
 /// Kills player if they are below the death plane position.
 /// </summary>
+[RequireComponent(typeof(PlayerController))]
 public class DeathFromBelow : MonoBehaviour
 {
     [SerializeField] Vector3 deathplanePos;
@@ -17,12 +18,17 @@ public class DeathFromBelow : MonoBehaviour
 
     void CheckForPlayer()
     {
-        if (player.transform.position.y < deathplanePos.y)
-        {
-            Debug.Log("Player is below death plane, starting death sequence...");
-            player.CurrentHealth = 0;
+        PlayerBelowDeathplane();
 
-            if (deathOverlay != null) deathOverlay.SetActive(true);
+        void PlayerBelowDeathplane()
+        {
+            if (player.transform.position.y < deathplanePos.y)
+            {
+                Debug.Log("Player is below death plane, starting death sequence...");
+                player.CurrentHealth = 0;
+
+                if (deathOverlay != null) deathOverlay.SetActive(true);
+            }
         }
     }
 }
