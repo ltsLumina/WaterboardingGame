@@ -53,7 +53,7 @@ MonoBehaviour:
   rotationDirection: 0
   isSwimming: 1
   swimSpeed: 120
-  impactDamage: 20
+  impactDamage: 50
   rotationPoint: {fileID: 0}
   rotationVector: {x: 0, y: 0, z: 0}
 --- !u!33 &530793461809336289

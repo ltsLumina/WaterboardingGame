@@ -4890,7 +4890,6 @@ GameObject:
   - component: {fileID: 992834022}
   - component: {fileID: 555827861}
   - component: {fileID: 555827862}
-  - component: {fileID: 8991172128845130516}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -5167,21 +5166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathplanePos: {x: 0, y: -5, z: 0}
   deathOverlay: {fileID: 0}
---- !u!114 &8991172128845130516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5264029762147553678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b9e4722b2f5d3c4da4fe298ebca5d46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jumpSFX: {fileID: 8300000, guid: 55ceaa5710745634787b1c1a9ae6e70a, type: 3}
-  landSFX: {fileID: 8300000, guid: 6c4ac4470534d2044852ad87f0af2638, type: 3}
-  dashSFX: {fileID: 8300000, guid: 6ea758f560c57ca4997b49364f688af2, type: 3}
 --- !u!1001 &5262804860022401887
 PrefabInstance:
   m_ObjectHideFlags: 0
