@@ -1,4 +1,5 @@
 #region
+using System;
 using UnityEngine;
 #endregion
 
@@ -12,11 +13,15 @@ public class CheepCheep : MonoBehaviour
     [Header("Configurable Parameters")]
     [SerializeField] bool isSwimming = true;
     [SerializeField] float swimSpeed = 20f;
+    [SerializeField] int impactDamage;
 
     // Always appears at the bottom due to editor scripting. This is done to make the inspector more readable.
     // These fields are used to determine whether the rotation point or rotation vector should be used.
     [SerializeField, HideInInspector] GameObject rotationPoint;
     [SerializeField, HideInInspector] Vector3 rotationVector;
+
+    // Cached References
+    PlayerController player;
 
     #region Enums (RotationType, RotationAxis, RotationDirection)
     public enum RotationType
@@ -49,19 +54,40 @@ public class CheepCheep : MonoBehaviour
     public GameObject RotationPoint => rotationPoint;
     #endregion
 
+    void Start() => player = FindObjectOfType<PlayerController>();
+
     void Update()
     {
         if (isSwimming) Swim();
     }
 
+
     /// <summary>
     /// Flips the swim speed if the rotation direction is changed to make the fish move in the inverse direction.
     /// </summary>
-    void OnValidate() =>
-        swimSpeed = rotationDirection switch
-        { RotationDirection.Clockwise        => Mathf.Abs(swimSpeed),
-          RotationDirection.CounterClockwise => -Mathf.Abs(swimSpeed),
-          _                                  => swimSpeed };
+    void OnValidate() //TODO: swimming broken
+    {
+        switch (rotationDirection)
+        {
+            case RotationDirection.Clockwise:
+                swimSpeed = Mathf.Abs(swimSpeed);
+
+                // Flip localscale depending on the rotaion direction
+                transform.localScale = new Vector3(1, 1, 1);
+
+                break;
+
+            case RotationDirection.CounterClockwise:
+                swimSpeed = -Mathf.Abs(swimSpeed);
+                // Flip localscale depending on the rotaion direction
+                transform.localScale = new Vector3(-1, 1, 1);
+
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 
     /// <summary>
     /// Rotates the GameObject around a point (GameObject) or a Vector3.
@@ -70,10 +96,29 @@ public class CheepCheep : MonoBehaviour
     {
         if (RotationPoint == null) return;
 
-        Vector3 axis = rotationAxis switch
-        { RotationAxis.X => Vector3.right,
-          RotationAxis.Y => Vector3.up,
-          RotationAxis.Z => Vector3.forward, };
+        Vector3 axis;
+
+        switch (rotationAxis)
+        {
+            case RotationAxis.X:
+                axis = Vector3.right;
+
+                transform.localRotation = Quaternion.Euler(transform.eulerAngles.x, 90, transform.eulerAngles.z);
+                break;
+
+            case RotationAxis.Y:
+                axis = Vector3.up;
+                break;
+
+            case RotationAxis.Z:
+                axis = Vector3.forward;
+
+                transform.localRotation = Quaternion.Euler(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
 
         // Determines whether the rotation is done around a GameObject or a Vector3
         switch (rotationTypeValue)
@@ -85,14 +130,21 @@ public class CheepCheep : MonoBehaviour
             case RotationType.Vector3:
                 transform.RotateAround(rotationVector, axis, swimSpeed * Time.deltaTime);
                 break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
-        const int damage = 10; // TODO: Make this a variable
-        other.gameObject.GetComponent<PlayerController>().CurrentHealth -= damage;
-        Debug.Log($"Player took {damage} damage!");
+
+        //-TODO: do something to indicate player takes damage here
+
+        // damage the player
+        player.CurrentHealth -= impactDamage;
+        StartCoroutine(player.HurtOverlay());
+        Debug.Log($"Player took {impactDamage} damage!");
     }
 }

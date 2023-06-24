@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
     [Header("Health")]
     [SerializeField] float currentHealth = 100f;
     [SerializeField] float maxHealth = 100f;
-
+    [SerializeField] GameObject hurtOverlay;
+    
     [Header("Running")]
     [SerializeField] float topSpeed = 10f;
     [SerializeField] float acceleration = 1f;
@@ -41,13 +42,27 @@ public class PlayerController : MonoBehaviour
     float coyoteTimeCounter;
     float currentSpeed;
     float fallingTimer;
+    public float FallingTimer { get => fallingTimer; private set => fallingTimer = value; }
     bool isGrounded;
+    public bool IsGrounded { get => isGrounded; private set => isGrounded = value; }
+
     bool isJumping;
+    public bool IsJumping { get => isJumping; private set => isJumping = value; }
+
     bool landingLock;
+    public bool LandingLock { get => landingLock; private set => landingLock = value; }
     public bool cursorLock;
     public static bool gameIsPaused;
     Transform mainCamera;
     Vector2 movementInput;
+    
+    SFXManager sfxManager;
+
+    bool isDead;
+
+    // on death event
+    public delegate void OnDeath();
+    public event OnDeath onDeath;
 
     public bool IsDashing { get; set; }
 
@@ -60,19 +75,29 @@ public class PlayerController : MonoBehaviour
         {
             currentHealth = value;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+            isDead = currentHealth <= 0;
+
+            if (!isDead) return;
+            Debug.Log("Player Died!");
+            onDeath?.Invoke();
         }
     }
 
     //Cached references
     readonly static int Dashing = Animator.StringToHash("isDashing");
     readonly static int Grounded = Animator.StringToHash("isGrounded");
-
+    
     void Awake()
     {
         if (cursorLock) Cursor.lockState = CursorLockMode.Locked;
         MyRigidbody = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
+        sfxManager = GetComponent<SFXManager>();
+
+        // on death event
+        onDeath += DoPlayerDeath;
     }
 
     void OnPause()
@@ -96,6 +121,13 @@ public class PlayerController : MonoBehaviour
             pauseScreen.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public IEnumerator HurtOverlay()
+    {
+        hurtOverlay.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        hurtOverlay.SetActive(false);
     }
 
     void Update()
@@ -142,6 +174,7 @@ public class PlayerController : MonoBehaviour
             {
                 landingLock = true;
                 characterAnimator.SetTrigger("landed");
+                sfxManager.PlaySFX(sfxManager.landSFX);
             }
 
             fallingTimer = 0;
@@ -153,8 +186,15 @@ public class PlayerController : MonoBehaviour
             fallingTimer += Time.deltaTime;
         }
 
-        if (movementInput != Vector2.zero && isGrounded) characterAnimator.SetBool("isRunning", true);
-        else characterAnimator.SetBool("isRunning", false);
+        if (movementInput != Vector2.zero && isGrounded)
+        {
+            characterAnimator.SetBool("isRunning", true);
+        }
+        else
+        {
+            characterAnimator.SetBool("isRunning", false);
+            sfxManager.PlaySFX(sfxManager.moveSFX);
+        }
 
         if (isGrounded)
         {
@@ -207,6 +247,7 @@ public class PlayerController : MonoBehaviour
         {
             if (activeJumpBuffer != null) StopCoroutine(activeJumpBuffer);
             activeJumpBuffer = StartCoroutine(JumpBufferRoutine());
+            sfxManager.PlaySFX(sfxManager.jumpSFX);
         }
         else { StartCoroutine(CancelJumpRoutine()); }
     }
@@ -258,8 +299,8 @@ public class PlayerController : MonoBehaviour
     void OnDash(InputValue value)
     {
         if (!value.isPressed || !canDash || IsDashing) return;
-
         StartCoroutine(DashRoutine());
+        sfxManager.PlaySFX(sfxManager.dashSFX);
     }
 
     IEnumerator DashRoutine()
@@ -283,4 +324,21 @@ public class PlayerController : MonoBehaviour
         IsDashing = false;
     }
     #endregion
+
+    public void DoPlayerDeath() => StartCoroutine(HandlePlayerDeath());
+
+    IEnumerator HandlePlayerDeath()
+    {
+        var rigidbodyConstraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+        MyRigidbody.constraints = rigidbodyConstraints;
+
+        canDash   = false;
+        jumpForce = 0;
+
+        yield return new WaitForSeconds(1f);
+        SceneManagerExtended.ReloadScene();
+    }
+
+    // Unsubscribe from event.
+    void OnDestroy() => onDeath -= DoPlayerDeath;
 }

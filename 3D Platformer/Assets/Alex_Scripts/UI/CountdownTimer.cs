@@ -7,7 +7,7 @@ using UnityEngine;
 public class CountdownTimer : MonoBehaviour
 {
     [Header("Timer Settings")]
-    [ReadOnly, SerializeField] float timeValue = 90f;
+    [SerializeField] float timeValue = 90f;
     [SerializeField] float startTime = 90f;
     [SerializeField] float maxTimeValue;
 
@@ -72,10 +72,9 @@ public class CountdownTimer : MonoBehaviour
     void CD_PlayerDeath()
     {
         Debug.Log("Player Died!!");
-        Destroy(player);
+        player.DoPlayerDeath();
 
-        try
-        {
+        try {
             SceneManagerExtended.ReloadScene();
         } catch (Exception error)
         {

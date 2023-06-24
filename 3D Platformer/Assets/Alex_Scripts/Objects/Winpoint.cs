@@ -13,13 +13,13 @@ public class Winpoint : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             DelayTaskAsync(SceneManagerExtended.ReloadScene, delayInSeconds).AsTask();
-            Time.timeScale = 0.35f;
+            Time.timeScale = Mathf.Lerp(1, 0.55f, delayInSeconds);
         }
     }
 
     void Update()
     {
         // Debugging.
-        if (Input.GetKeyDown(KeyCode.R)) DelayTaskAsync(SceneManagerExtended.ReloadScene, delayInSeconds).AsTask();
+        if (Input.GetKeyDown(KeyCode.Backspace)) DelayTaskAsync(SceneManagerExtended.ReloadScene, delayInSeconds).AsTask();
     }
 }
