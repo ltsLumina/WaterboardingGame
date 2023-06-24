@@ -13,6 +13,7 @@ public class BreakableCrate : MonoBehaviour
     PlayerController player;
     MeshRenderer meshRenderer;
     Collider boxCollider;
+    SFXManager sfxManager;
 
     void Start()
     {
@@ -21,12 +22,14 @@ public class BreakableCrate : MonoBehaviour
         player         = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         meshRenderer   = GetComponent<MeshRenderer>();
         boxCollider    = GetComponent<BoxCollider>();
+        sfxManager     = FindObjectOfType<SFXManager>();
     }
 
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Player") && player.IsDashing)
         {
+            sfxManager.PlaySFX(sfxManager.crateSFX);
             particleEffect.Play();
             dustEffect.Play();
             meshRenderer.enabled = false;

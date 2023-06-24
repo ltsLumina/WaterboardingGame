@@ -11,9 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float currentHealth = 100f;
     [SerializeField] float maxHealth = 100f;
     [SerializeField] GameObject hurtOverlay;
-
     
-
     [Header("Running")]
     [SerializeField] float topSpeed = 10f;
     [SerializeField] float acceleration = 1f;
@@ -57,6 +55,8 @@ public class PlayerController : MonoBehaviour
     public static bool gameIsPaused;
     Transform mainCamera;
     Vector2 movementInput;
+    
+    SFXManager sfxManager;
 
     bool isDead;
 
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         MyRigidbody = GetComponent<Rigidbody>();
         if (Camera.main != null) mainCamera = Camera.main.transform;
         characterAnimator = GetComponentInChildren<Animator>();
+        sfxManager = GetComponent<SFXManager>();
 
         // on death event
         onDeath += DoPlayerDeath;
@@ -173,6 +174,7 @@ public class PlayerController : MonoBehaviour
             {
                 landingLock = true;
                 characterAnimator.SetTrigger("landed");
+                sfxManager.PlaySFX(sfxManager.landSFX);
             }
 
             fallingTimer = 0;
@@ -184,8 +186,15 @@ public class PlayerController : MonoBehaviour
             fallingTimer += Time.deltaTime;
         }
 
-        if (movementInput != Vector2.zero && isGrounded) characterAnimator.SetBool("isRunning", true);
-        else characterAnimator.SetBool("isRunning", false);
+        if (movementInput != Vector2.zero && isGrounded)
+        {
+            characterAnimator.SetBool("isRunning", true);
+        }
+        else
+        {
+            characterAnimator.SetBool("isRunning", false);
+            sfxManager.PlaySFX(sfxManager.moveSFX);
+        }
 
         if (isGrounded)
         {
@@ -238,6 +247,7 @@ public class PlayerController : MonoBehaviour
         {
             if (activeJumpBuffer != null) StopCoroutine(activeJumpBuffer);
             activeJumpBuffer = StartCoroutine(JumpBufferRoutine());
+            sfxManager.PlaySFX(sfxManager.jumpSFX);
         }
         else { StartCoroutine(CancelJumpRoutine()); }
     }
@@ -290,6 +300,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!value.isPressed || !canDash || IsDashing) return;
         StartCoroutine(DashRoutine());
+        sfxManager.PlaySFX(sfxManager.dashSFX);
     }
 
     IEnumerator DashRoutine()

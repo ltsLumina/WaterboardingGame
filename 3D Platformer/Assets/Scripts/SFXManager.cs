@@ -1,48 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SFXManager : MonoBehaviour
 {
+    
+    
     //SFX
-    [SerializeField] private AudioClip jumpSFX;
-    [SerializeField] private AudioClip landSFX;
-    [SerializeField] private AudioClip dashSFX;
+    [SerializeField] public AudioClip jumpSFX;
+    [SerializeField] public AudioClip landSFX;
+    [SerializeField] public AudioClip dashSFX;
+    [SerializeField] public AudioClip moveSFX;
+    [SerializeField] public AudioClip pickupSFX;
+    [SerializeField] public AudioClip crateSFX;
+
+    
+
+    
+
+    
 
     //private caches
     private AudioSource myAudioSource;
     private PlayerController playerController;
+    PlayerInput playerInput;
 
     // Start is called before the first frame update
     void Start()
     {
-        myAudioSource = GetComponent<AudioSource>();
+        myAudioSource    = GetComponent<AudioSource>();
         playerController = GetComponent<PlayerController>();
+        playerInput      = GetComponent<PlayerInput>();
+        
+        // playerInput.actions["Jump"].performed += _ => PlaySFX(jumpSFX);
+        // playerInput.actions["Dash"].performed += _ => PlaySFX(dashSFX);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (myAudioSource == null) { return; }
-        if (playerController == null) { return;}
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!playerController.IsJumping) return;
-            PlaySFX(jumpSFX);   
-        }
-        if(Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if (!playerController.IsDashing) return;
-            PlaySFX(dashSFX);
-        }
-        if(!playerController.LandingLock && playerController.FallingTimer > 0.3f)
-        {
-            PlaySFX(landSFX);
-        }
-    }
-
-    private void PlaySFX(AudioClip SFX)
+    
+    public void PlaySFX(AudioClip SFX)
     {
         myAudioSource.clip = SFX;
         myAudioSource.Play();
